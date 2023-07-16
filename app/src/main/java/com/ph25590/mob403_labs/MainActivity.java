@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.ph25590.mob403_labs.lab1.Lab1Activity;
 import com.ph25590.mob403_labs.lab2.Lab2Activity;
+import com.ph25590.mob403_labs.lab3.Lab3Activity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         lab3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(MainActivity.this, Lab3Activity.class));
+                hienThongBao("lab3");
             }
         });
     }

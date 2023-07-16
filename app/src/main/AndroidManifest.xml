@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MOB403_AndroidNetworking_Labs"
         tools:targetApi="31">
+        <activity
+            android:name=".lab3.Lab31Activity"
+            android:exported="false" />
+        <activity
+            android:name=".lab3.Lab3Activity"
+            android:exported="false" />
         <activity
             android:name=".lab1.Lab1Activity"
             android:exported="false" />
