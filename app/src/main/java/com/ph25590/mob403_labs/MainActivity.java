@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         lab7 = findViewById(R.id.lab7Button);
         lab8 = findViewById(R.id.lab8Button);
 
+        lab6.setEnabled(false);
+        lab7.setEnabled(false);
+        lab8.setEnabled(false);
+
         lab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +75,27 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, Lab5Activity.class));
                 hienThongBao("lab5");
+            }
+        });
+
+        lab6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        lab7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        lab8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }
