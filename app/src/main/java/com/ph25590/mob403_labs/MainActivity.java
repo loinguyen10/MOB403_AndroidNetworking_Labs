@@ -13,6 +13,7 @@ import com.ph25590.mob403_labs.lab1.Lab1Activity;
 import com.ph25590.mob403_labs.lab2.Lab2Activity;
 import com.ph25590.mob403_labs.lab3.Lab3Activity;
 import com.ph25590.mob403_labs.lab4.Lab4Activity;
+import com.ph25590.mob403_labs.lab5.Lab5Activity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, Lab4Activity.class));
                 hienThongBao("lab4");
+            }
+        });
+
+        lab5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, Lab5Activity.class));
+                hienThongBao("lab5");
             }
         });
     }
