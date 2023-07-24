@@ -1,9 +1,9 @@
-package com.ph25590.mob403_labs.lab4;
+package com.ph25590.mob403_labs.sharedFiles;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface InterfaceSelect {
     @GET("api_getSelect.php")
-    Call<SvrResponseSelect> getHuman();
+    Call<SvrResponse> getHuman();
 }

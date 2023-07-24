@@ -1,8 +1,13 @@
-package com.ph25590.mob403_labs.lab4;
+package com.ph25590.mob403_labs.sharedFiles;
 
-public class SvrResponseInsert {
+public class SvrResponse {
+    private Human[] humans;
     private Human human;
     private String message;
+
+    public Human[] getHumans() {
+        return humans;
+    }
 
     public Human getHuman() {
         return human;

@@ -1,4 +1,4 @@
-package com.ph25590.mob403_labs.lab4;
+package com.ph25590.mob403_labs.sharedFiles;
 
 public class Human {
     int id,age,price;

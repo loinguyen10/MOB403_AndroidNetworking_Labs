@@ -1,9 +1,4 @@
-package com.ph25590.mob403_labs.lab4;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.ph25590.mob403_labs.lab5;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,11 +8,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.ph25590.mob403_labs.lab5.Adapter;
+
 import com.ph25590.mob403_labs.R;
-import com.ph25590.mob403_labs.sharedFiles.Adapter;
-import com.ph25590.mob403_labs.sharedFiles.Human;
+import com.ph25590.mob403_labs.sharedFiles.InterfaceDelete;
 import com.ph25590.mob403_labs.sharedFiles.InterfaceInsert;
 import com.ph25590.mob403_labs.sharedFiles.InterfaceSelect;
+import com.ph25590.mob403_labs.sharedFiles.Human;
+import com.ph25590.mob403_labs.sharedFiles.InterfaceUpdate;
 import com.ph25590.mob403_labs.sharedFiles.SvrResponse;
 
 import java.util.ArrayList;
@@ -30,38 +33,29 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Lab4Activity extends AppCompatActivity {
+public class Lab5Activity extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    Button buttonAdd,buttonGet;
+    Button buttonLoad;
     List<Human> list; //= new ArrayList<>();
     Human human = new Human();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lab4);
+        setContentView(R.layout.activity_lab5);
         recyclerView = findViewById(R.id.recyclerView);
-        buttonAdd = findViewById(R.id.buttonAdd);
-        buttonGet = findViewById(R.id.buttonGet);
+        buttonLoad = findViewById(R.id.buttonLoad);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        buttonGet.setOnClickListener(new View.OnClickListener() {
+        buttonLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getSelect();
             }
         });
-
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addMem();
-            }
-        });
-
     }
 
     private void getSelect() {
@@ -78,32 +72,20 @@ public class Lab4Activity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SvrResponse> call, Response<SvrResponse> response) {
                 SvrResponse svrResponseSelect = response.body();//lay ket qua server tra ve
-                Log.d("22", svrResponseSelect + "");
                 list = new ArrayList<>(Arrays.asList(svrResponseSelect.getHumans()));//chuyen du lieu sang list
-//                for (Human p : list)//cho vao vong for de doc tung doi tuong
-//                {
-//                    kq += "Name: " + p.getName() +
-//                            "; Price: " + p.getPrice() +
-//                            "; Age: " + p.getAge() + "\n";
-//                }
-//                txt.setText(kq);
-
-                Adapter adapter = new Adapter(Lab4Activity.this, (ArrayList<Human>) list);
-
+                Adapter adapter = new Adapter(Lab5Activity.this, (ArrayList<Human>) list);
                 recyclerView.setAdapter(adapter);
             }
 
             //that bai
             @Override
             public void onFailure(Call<SvrResponse> call, Throwable t) {
-                Toast.makeText(Lab4Activity.this, t.getMessage(), Toast.LENGTH_SHORT);
                 Log.d("Message: ", t.getMessage());
-                Log.e("Message: ", t.getMessage());
             }
         });
     }
 
-    private void addMem() {
+    public void updateMem(int txtId,String txtName,int txtAge,int txtPrice) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         View v = getLayoutInflater().inflate(R.layout.addmem, null);
         dialog.setView(v);
@@ -112,10 +94,17 @@ public class Lab4Activity extends AppCompatActivity {
         EditText age = v.findViewById(R.id.edt_age);
         EditText price = v.findViewById(R.id.edt_price);
 
+        id.setText(txtId+"");
+        name.setText(txtName);
+        age.setText(txtAge+"");
+        price.setText(txtPrice+"");
+
+        id.setEnabled(false);
+
         dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                insertData(
+                updateData(
                         Integer.parseInt(id.getText().toString()),
                         name.getText().toString(),
                         Integer.parseInt(age.getText().toString()),
@@ -124,9 +113,10 @@ public class Lab4Activity extends AppCompatActivity {
             }
         });
 
-        dialog.setNegativeButton("KO", new DialogInterface.OnClickListener() {
+        dialog.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                deleteData(txtId);
                 dialog.create().dismiss();
             }
         });
@@ -136,41 +126,70 @@ public class Lab4Activity extends AppCompatActivity {
 
     }
 
-    private void insertData(int id, String name, int age, int price) {
-        Log.d("insert ", id + " " + name + " " + age + " " + price);
-        //B0. Dua du lieu vao doi tuong
+    private void updateData(int id, String name, int age, int price) {
+        Log.d("update ", id + " " + name + " " + age + " " + price);
+
         human.setName(name);
         human.setAge(age);
         human.setId(id);
         human.setPrice(price);
-        //B1. Tao doi tuong retrofit
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://lmatmet1234.000webhostapp.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        //b2. Chuan bi ham va thuc thi ham
-        //2.1 - goi inteface
-        InterfaceInsert interfaceInsert = retrofit.create(InterfaceInsert.class);
-        //2.2. chuan bi ham
+
+        InterfaceUpdate interfaceUpdate = retrofit.create(InterfaceUpdate.class);
+
         Call<SvrResponse> call =
-                interfaceInsert.insertHuman(human.getId(),human.getName(), human.getAge(), human.getPrice());
-        //2.3 goi ham
+                interfaceUpdate.updateHuman(human.getId(),human.getName(), human.getAge(), human.getPrice());
+
         call.enqueue(new Callback<SvrResponse>() {
-            //thanh cong
+
             @Override
             public void onResponse(Call<SvrResponse> call, Response<SvrResponse> response) {
-                SvrResponse SvrResponse = response.body();//lay noi dung server tra ve
-                Toast.makeText(Lab4Activity.this, SvrResponse.getMessage(), Toast.LENGTH_SHORT);
-                Log.d("Message: ", SvrResponse.getMessage());
-                Log.e("Message: ", SvrResponse.getMessage());
+                SvrResponse svrResponseUpdate = response.body();//lay noi dung server tra ve
+                Toast.makeText(Lab5Activity.this,"OK",Toast.LENGTH_SHORT);
+                Log.d("Message: ", svrResponseUpdate.getMessage());
             }
 
             //that bai
             @Override
             public void onFailure(Call<SvrResponse> call, Throwable t) {
-                Toast.makeText(Lab4Activity.this, t.getMessage(), Toast.LENGTH_SHORT);
                 Log.d("Message: ", t.getMessage());
-                Log.e("Message: ", t.getMessage());
+            }
+        });
+    }
+
+    private void deleteData(int id){
+        human.setId(id);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://lmatmet1234.000webhostapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        InterfaceDelete interfaceDelete = retrofit.create(InterfaceDelete.class);
+
+        Call<SvrResponse> call = interfaceDelete.deleteHuman(human.getId());
+
+        call.enqueue(new Callback<SvrResponse>() {
+            @Override
+            public void onResponse(Call<SvrResponse> call, Response<SvrResponse> response) {
+                SvrResponse svrResponseDelete = response.body();
+                Log.d("delete",svrResponseDelete+"");
+                if(svrResponseDelete == null){
+                    Toast.makeText(Lab5Activity.this,"KO",Toast.LENGTH_SHORT);
+                    Log.d("delete",svrResponseDelete.getMessage()+"");
+                }else{
+                    Toast.makeText(Lab5Activity.this,"OK",Toast.LENGTH_SHORT);
+                    Log.d("delete",svrResponseDelete.getMessage()+"");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SvrResponse> call, Throwable t) {
+                Log.d("Message: ", t.getMessage());
             }
         });
     }
