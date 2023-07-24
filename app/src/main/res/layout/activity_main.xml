@@ -49,40 +49,35 @@
             android:layout_height="25pt"
             android:text="Lab 4"
             android:textSize="20dp"
-            android:id="@+id/lab4Button"
-            android:enabled="true"/>
+            android:id="@+id/lab4Button"/>
 
         <Button
             android:layout_width="55pt"
             android:layout_height="25pt"
             android:text="Lab 5"
             android:textSize="20dp"
-            android:id="@+id/lab5Button"
-            android:enabled="false"/>
+            android:id="@+id/lab5Button"/>
 
         <Button
             android:layout_width="55pt"
             android:layout_height="25pt"
             android:text="Lab 6"
             android:textSize="20dp"
-            android:id="@+id/lab6Button"
-            android:enabled="false"/>
+            android:id="@+id/lab6Button"/>
 
         <Button
             android:layout_width="55pt"
             android:layout_height="25pt"
             android:text="Lab 7"
             android:textSize="20dp"
-            android:id="@+id/lab7Button"
-            android:enabled="false"/>
+            android:id="@+id/lab7Button"/>
 
         <Button
             android:layout_width="55pt"
             android:layout_height="25pt"
             android:text="Lab 8"
             android:textSize="20dp"
-            android:id="@+id/lab8Button"
-            android:enabled="false"/>
+            android:id="@+id/lab8Button"/>
     </LinearLayout>
 
 </LinearLayout>
