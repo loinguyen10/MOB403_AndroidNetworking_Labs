@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         lab7 = findViewById(R.id.lab7Button);
         lab8 = findViewById(R.id.lab8Button);
 
-        lab6.setEnabled(false);
         lab7.setEnabled(false);
         lab8.setEnabled(false);
 
