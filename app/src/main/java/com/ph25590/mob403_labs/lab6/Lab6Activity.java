@@ -37,8 +37,8 @@ public class Lab6Activity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getData.getJSONArray(Lab6Activity.this,txt);
-                getJSON_ObjectsOfArray();
+               getData.getJSONArray(Lab6Activity.this,txt);
+                //getJSON_ObjectsOfArray();
             }
         });
 
