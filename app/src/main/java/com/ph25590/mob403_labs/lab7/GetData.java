@@ -2,6 +2,8 @@ package com.ph25590.mob403_labs.lab7;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -16,31 +18,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class GetData {
-
-    public void getStringVolley(Context context, TextView textView){
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        String url = "http://www.google.com/";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                textView.setText(response.substring(0,1000));
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                textView.setText(error.getMessage());
-            }
-        });
-
-        queue.add(stringRequest);
-    }
-
     String kq = "";
+    List<String> list;
 
-    public void getJSONArray(Context context, TextView textView){
+    public void getJSONArray(Context context, ListView listView){
         RequestQueue queue = Volley.newRequestQueue(context);
 
         String url = "https://lmatmet1234.000webhostapp.com/array_json_new.json";
@@ -64,17 +48,20 @@ public class GetData {
                         kq += "Email: " + email + "\n";
                         kq += "Mobile: " + mobile + "\n";
                         kq += "Home: " + home + "\n";
+
+                        list.add(kq);
                     }catch (JSONException e){
                         e.printStackTrace();
                     }
 
-                    textView.setText(kq);
+                    ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1,list);
+                    listView.setAdapter(adapter);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                textView.setText(error.getMessage());
+                System.out.println(error.getMessage());
             }
         });
 
