@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ph25590.mob403_labs.R;
+import com.ph25590.mob403_labs.lab5.Lab5Activity;
 import com.ph25590.mob403_labs.sharedFiles.Human;
 
 import java.util.ArrayList;
@@ -26,21 +28,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_item, parent, false);
-        return new ViewHolder(v);
+        return new com.ph25590.mob403_labs.lab7.Adapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Adapter.ViewHolder holder, int position) {
         Human human = list.get(position);
 
-        holder.txtId.setText(human.getId()+"");
-        holder.txtName.setText(human.getName());
-        holder.txtPrice.setText(human.getPrice()+"");
-        holder.txtAge.setText(human.getAge()+"");
-
-        Log.d("ss", human.getId() + " + " + human.getName() + " + " + human.getAge() + " + " + human.getPrice());
+        holder.txt.setText(human.getId() + " - " + human.getName() + " - " + human.getAge() + " - " + human.getPrice());
+        holder.txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(context instanceof Lab7Activity){
+                    ((Lab7Activity) context).updateNg(human.getId(), human.getName(), human.getAge() , human.getPrice());
+                }
+            }
+        });
 
     }
 
@@ -50,14 +55,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        EditText txtId, txtName, txtAge, txtPrice;
+        TextView txt;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtId = itemView.findViewById(R.id.id);
-            txtName = itemView.findViewById(R.id.name);
-            txtPrice = itemView.findViewById(R.id.price);
-            txtAge = itemView.findViewById(R.id.age);
+            txt = itemView.findViewById(R.id.text1);
 
         }
     }

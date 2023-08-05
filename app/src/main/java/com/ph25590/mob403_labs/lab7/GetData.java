@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -28,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 public class GetData {
-    String kq = "";
-
     public void getJSONArray(Context context, RecyclerView recyclerView) {
         List<Human> list = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -62,8 +61,34 @@ public class GetData {
                 System.out.println(error.getMessage());
             }
         });
-        //b5. truyen tham so (neu co)
-        //b6. thuc thi
+        queue.add(request);
+    }
+
+    public void insertVolley(Context context, String id, String name, String age, String price) {
+        RequestQueue queue=Volley.newRequestQueue(context);
+        String url="https://lmatmet1234.000webhostapp.com/api_postCreate.php";
+        StringRequest request=new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> mydata=new HashMap<>();
+                mydata.put("id",id);
+                mydata.put("name",name);
+                mydata.put("age",age);
+                mydata.put("price",price);
+                return mydata;
+            }
+        };
         queue.add(request);
     }
 
@@ -89,6 +114,33 @@ public class GetData {
                 mydata.put("name",name);
                 mydata.put("age",age);
                 mydata.put("price",price);
+                return mydata;
+            }
+        };
+        queue.add(request);
+    }
+
+    public void deleteVolley(Context context, String id) {
+        RequestQueue queue= Volley.newRequestQueue(context);
+        //b3. url
+        String url="https://lmatmet1234.000webhostapp.com/api_postDelete.php";
+        StringRequest request=new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error.getMessage());
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> mydata=new HashMap<>();
+                mydata.put("id",id);
                 return mydata;
             }
         };
